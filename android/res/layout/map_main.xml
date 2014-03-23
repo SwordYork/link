@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <com.baidu.mapapi.map.MapView android:id="@+id/bmapsView"
+                                  android:layout_width="fill_parent"
+                                  android:layout_height="fill_parent"
+                                  android:clickable="true" />
+    <Button
+            android:layout_width="142dp"
+            android:layout_height="wrap_content"
+            android:text="ta的位置"
+            android:id="@+id/talocation"
+            android:layout_alignParentTop="true" android:layout_alignParentRight="true"
+            android:gravity="center_vertical|right"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置"
+            android:id="@+id/setting_button"
+            android:layout_below="@+id/talocation" android:layout_alignLeft="@+id/talocation"
+            android:layout_alignRight="@+id/talocation" android:gravity="center_vertical|right"/>
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton"
+            android:baselineAlignBottom="false"
+            android:src="@drawable/ic_launcher"
+            android:layout_alignParentBottom="true" android:layout_alignParentLeft="true"/>
+</RelativeLayout>

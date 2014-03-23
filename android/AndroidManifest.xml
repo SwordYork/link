@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.iiyouyou.link"
+          android:versionCode="1"
+          android:versionName="1.0">
+
+    <supports-screens android:largeScreens="true"
+                      android:normalScreens="true"
+                      android:smallScreens="true"
+                      android:resizeable="true"
+                      android:anyDensity="true"/>
+
+    <uses-sdk android:minSdkVersion="14"/>
+
+    <!--以下为必须的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="getui.permission.GetuiService" />
+
+    <!--可选权限 -->
+    <!--<uses-permission android:name="android.permission.CALL_PHONE" />-->
+
+    <!--地图-->
+
+    <!-- 这个权限用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <!-- 这个权限用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <!-- 用于访问wifi网络信息,wifi信息会用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <!-- 这个权限用于获取wifi的获取权限,wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
+    <!-- 用于读取手机当前的状态-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <!-- SD卡读取权限，用户写入离线定位数据-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
+    <!-- 允许应用读取低级别的系统日志文件-->
+    <uses-permission android:name="android.permission.READ_LOGS"></uses-permission>
+    <!--使用网络功能所需权限  -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS">
+    </uses-permission>
+    <!-- 获取设置信息和详情页直接拨打电话需要以下权限  -->
+    <uses-permission android:name="android.permission.CALL_PHONE">
+    </uses-permission>
+    <!-- 使用定位功能所需权限,demo已集成百度定位SDK,不使用定位功能可去掉以下6项 -->
+    <permission android:name="android.permission.BAIDU_LOCATION_SERVICE">
+    </permission>
+    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE">
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION">
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_GPS"/>
+
+
+    <!--自定义权限-->
+    <permission
+            android:name="getui.permission.GetuiService"
+            android:protectionLevel="normal" >
+    </permission>
+
+    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
+
+        <!-- ====================================================== -->
+        <!-- 个推SDK配置开始 -->
+        <!-- 配置的第三方参数属性 -->
+        <meta-data android:name="appid" android:value="tuiS0dcMLk80HeLrd5cfc7" />
+        <meta-data android:name="appsecret" android:value="27rX8L41TF93wkYIqi8Ql7" />
+        <meta-data android:name="appkey" android:value="GRw8XjJyi07lsPSwigac59" />
+        <meta-data android:name="groupid" android:value="" />
+        <activity android:name="com.igexin.sdk.SdkActivity"
+                  android:process=":pushservice"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:taskAffinity="android.task.GexinSdkActivityTask"
+                  android:excludeFromRecents="true"
+                  android:exported="false">
+            <intent-filter>
+                <action android:name="com.igexin.action.popupact.com.iiyouyou.link" />
+                <!-- com.igexin.action.popupact.第三方的包名 -->
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- 配置弹框activity -->
+        <activity android:name="com.igexin.getuiext.activity.GetuiExtActivity"
+                  android:process=":pushservice"
+                  android:configChanges="orientation|keyboard|keyboardHidden"
+                  android:excludeFromRecents="true"
+                  android:taskAffinity="android.task.myServicetask"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:exported="false" />
+
+        <service android:label="NotifyCenter"
+                 android:name="com.igexin.sdk.SdkMainService"
+                 android:process=":pushservice"
+                 android:exported="false">
+        </service>
+        <service android:label="NotifyCenterAIDL"
+                 android:name="com.igexin.sdk.coordinator.SdkMsgService"
+                 android:process=":pushservice"
+                 android:exported="true">
+        </service>
+
+        <!-- 个推download模块配置-->
+        <service android:name="sdk.download.DownloadService"
+                 android:process=":pushservice" />
+        <receiver
+                android:exported="false" android:name="sdk.download.DownloadReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <provider android:authorities="sdk.download.com.iiyouyou.link"
+                  android:process=":pushservice"
+                  android:name="sdk.download.DownloadProvider"/>
+        <!-- android:authorities="sdk.download.第三方包名" -->
+
+        <!-- GetuiExt模块配置 -->
+        <service android:name="com.igexin.getuiext.service.GetuiExtService"
+                 android:exported="false"
+                 android:process=":pushservice" />
+        <receiver android:name="com.igexin.getuiext.service.PayloadReceiver"
+                  android:exported="false" >
+            <intent-filter>
+                <!-- 这个com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4固定，不能修改  -->
+                <action android:name="com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4" />
+                <!-- android:name="com.igexin.sdk.action.第三方的appId" -->
+                <action android:name="com.igexin.sdk.action.tuiS0dcMLk80HeLrd5cfc7" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.igexin.download.DownloadService"
+                 android:exported="false"
+                 android:process=":pushservice" />
+        <provider android:authorities="increment.download.com.iiyouyou.link"
+                  android:process=":pushservice"
+                  android:exported="false"
+                  android:name="com.igexin.download.DownloadProvider" />
+        <receiver
+                android:exported="false" android:name="com.igexin.download.DownloadReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.igexin.sdk.SdkReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.igexin.sdk.coordinator.NotificationCenterAIDLReceiver">
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.refreshls" />
+            </intent-filter>
+        </receiver>
+        <!-- ====================================================== -->
+
+
+        <!-- ====================================================== -->
+        <!--baidu 地图-->
+        <meta-data
+                android:name="com.baidu.lbsapi.API_KEY"
+                android:value="QQqN1f0InbSO1stbhVCgoChe" />
+        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
+        </service>
+        <!-- ====================================================== -->
+
+
+        <activity android:name="MainActivity"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name="SetInfo">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <receiver
+                android:name=".MsgReceiver"
+                android:exported="false" >
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.tuiS0dcMLk80HeLrd5cfc7" />
+                <!-- com.igexin.sdk.action.第三方的appId -->
+            </intent-filter>
+        </receiver>
+
+
+        <receiver
+                android:name=".ReqLocReceiver"
+                android:exported="false" >
+            <intent-filter>
+                <action android:name="com.iiyouyou.link.REQ_LOCATION_RECEIVER" />
+                <!-- com.igexin.sdk.action.第三方的appId -->
+            </intent-filter>
+        </receiver>
+
+        <!--<activity android:name=".TheMap"-->
+                  <!--android:screenOrientation="sensor"-->
+                  <!--android:configChanges="orientation|keyboardHidden">-->
+        <!--</activity>-->
+
+    </application>
+</manifest>
